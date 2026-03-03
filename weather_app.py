@@ -7,7 +7,6 @@ import streamlit as st
 import joblib
 from datetime import datetime
 
-# Function to fetch weather data from Open-Meteo
 def fetch_weather_data(lat=50.45, lon=30.52, start_date='2023-01-01', end_date='2026-12-31'):
     url = (
         f"https://archive-api.open-meteo.com/v1/archive?"
@@ -24,7 +23,6 @@ def fetch_weather_data(lat=50.45, lon=30.52, start_date='2023-01-01', end_date='
     df['time'] = pd.to_datetime(df['time'])
     return df
 
-# Streamlit app
 st.title("Прогноз опадів на основі даних Open-Meteo")
 
 # Section 1: Load data
@@ -101,7 +99,7 @@ if st.button("Зробити прогноз"):
     except FileNotFoundError:
         st.error("Модель або дані не знайдено. Спочатку навчіть модель.")
     else:
-        # For demonstration, predict for the last day using the previous day's data
+
         last_idx = -1
         input_data = pd.DataFrame({
             'temp_max_lag1': [data_df['temperature_2m_max'].iloc[last_idx-1]],
@@ -116,7 +114,7 @@ if st.button("Зробити прогноз"):
         else:
             st.success("Опадів не очікується")
 
-# Alternative: Predict for a specific date
+
 st.subheader("Прогноз для обраної дати")
 if 'model.pkl' in joblib.os.listdir():
     model = joblib.load('model.pkl')
@@ -142,4 +140,5 @@ if 'model.pkl' in joblib.os.listdir():
             st.write("Прогноз: Опадів не очікується")
         st.write(f"Фактичні опади: {actual}")
 else:
+
     st.info("Спочатку навчіть модель.")
